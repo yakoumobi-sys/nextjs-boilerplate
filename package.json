@@ -13,6 +13,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "lucide-react": "^0.294.0"
+    "autoprefixer": "^10"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
