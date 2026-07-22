@@ -1,19 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ArrowRight, ArrowUpRight, Mic, GraduationCap, Gift, Instagram, Youtube, Mail, ChevronDown } from "lucide-react"
+import Link from "next/link"
 
 export default function Home() {
   const [email, setEmail] = useState("")
-  const [scrollPos, setScrollPos] = useState(0)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => setScrollPos(window.scrollY)
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,11 +30,18 @@ export default function Home() {
   }
 
   return (
-    <main className="w-full bg-[#0A0A0B] text-[#F5F3EE] overflow-hidden">
+    <div style={styles.root}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;900&display=swap');
 
         * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        html {
+          scroll-behavior: smooth;
           scrollbar-width: thin;
           scrollbar-color: #D4A853 #0A0A0B;
         }
@@ -59,21 +59,15 @@ export default function Home() {
           border-radius: 4px;
         }
 
+        body, html {
+          background: #0A0A0B;
+          color: #F5F3EE;
+        }
+
         @keyframes fadeInUp {
           from {
             opacity: 0;
             transform: translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fadeInDown {
-          from {
-            opacity: 0;
-            transform: translateY(-40px);
           }
           to {
             opacity: 1;
@@ -92,225 +86,165 @@ export default function Home() {
           }
         }
 
-        @keyframes slideInRight {
-          from {
-            opacity: 0;
-            transform: translateX(60px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
         @keyframes pulse-glow {
-          0%, 100% {
-            box-shadow: 0 0 20px rgba(212, 168, 83, 0);
-          }
-          50% {
-            box-shadow: 0 0 30px rgba(212, 168, 83, 0.3);
-          }
+          0%, 100% { box-shadow: 0 0 20px rgba(212, 168, 83, 0); }
+          50% { box-shadow: 0 0 30px rgba(212, 168, 83, 0.3); }
         }
 
         @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-        }
-
-        @keyframes shimmer {
-          0% {
-            background-position: -1000px 0;
-          }
-          100% {
-            background-position: 1000px 0;
-          }
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
         }
 
         .animate-fade-in-up {
           animation: fadeInUp 0.8s ease-out forwards;
         }
 
-        .animate-fade-in-down {
-          animation: fadeInDown 0.8s ease-out forwards;
-        }
-
         .animate-slide-in-left {
           animation: slideInLeft 0.8s ease-out forwards;
-        }
-
-        .animate-slide-in-right {
-          animation: slideInRight 0.8s ease-out forwards;
-        }
-
-        .animate-pulse-glow {
-          animation: pulse-glow 3s ease-in-out infinite;
         }
 
         .animate-float {
           animation: float 6s ease-in-out infinite;
         }
 
-        .group:hover .group-hover\\:scale-110 {
-          transform: scale(1.05);
-          transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        a {
+          color: inherit;
+          text-decoration: none;
         }
 
-        .transition-all {
-          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .hover-lift:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 20px 40px rgba(212, 168, 83, 0.2);
-        }
-
-        .text-gradient {
-          background: linear-gradient(135deg, #D4A853 0%, #E0B96A 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .border-gradient {
-          position: relative;
-          background: #141416;
-          border: 1px solid transparent;
-          background-clip: padding-box;
-        }
-
-        .border-gradient::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(135deg, #D4A853, #8a6a2f);
-          border-radius: inherit;
-          z-index: -1;
-          padding: 1px;
+        input {
+          font-family: 'Archivo', system-ui, sans-serif;
         }
       `}</style>
 
       {/* NAV */}
-      <nav className="fixed top-0 w-full z-50 bg-[#0A0A0B]/85 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-6xl mx-auto px-5 py-4 flex justify-between items-center">
-          <div className="font-black tracking-tight text-lg animate-fade-in-down">MOKA YAKOUBI</div>
-          <div className="hidden md:flex items-center gap-8 text-sm text-white/70">
-            <a href="#formations" className="hover:text-[#D4A853] transition-colors">Formations</a>
-            <a href="#podcast" className="hover:text-[#D4A853] transition-colors">Podcast</a>
-            <a href="#story" className="hover:text-[#D4A853] transition-colors">Story</a>
+      <nav style={styles.nav}>
+        <div style={styles.navContainer}>
+          <div style={styles.logo}>MOKA YAKOUBI</div>
+          <div style={styles.links}>
+            <a href="#formations" style={styles.navLink}>Formations</a>
+            <a href="#podcast" style={styles.navLink}>Podcast</a>
+            <a href="#story" style={styles.navLink}>Story</a>
           </div>
-          <a href="#newsletter" className="bg-[#D4A853] text-black text-sm font-bold px-5 py-2.5 rounded-full hover-lift">
+          <button
+            style={styles.navBtn}
+            onClick={() => document.getElementById("newsletter")?.scrollIntoView({ behavior: "smooth" })}
+          >
             Rejoindre
-          </a>
+          </button>
         </div>
       </nav>
 
       {/* HERO */}
-      <section className="relative min-h-screen pt-24 px-5 pb-20 overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-[#D4A853] rounded-full blur-3xl opacity-10"></div>
-          <div className="absolute bottom-32 right-10 w-96 h-96 bg-[#D4A853] rounded-full blur-3xl opacity-10"></div>
-        </div>
+      <section style={styles.hero}>
+        <div style={styles.heroBg1}></div>
+        <div style={styles.heroBg2}></div>
 
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <div className="animate-fade-in-down mb-8">
-              <p className="text-[#D4A853] font-semibold tracking-[0.25em] text-xs uppercase mb-6">
-                Entrepreneur · Fondateur · Visionnaire
-              </p>
+        <div style={styles.heroContainer}>
+          <span className="animate-slide-in-left" style={styles.tag}>
+            Entrepreneur · Fondateur · Visionnaire
+          </span>
+
+          <h1 className="animate-fade-in-up" style={{ ...styles.h1, animationDelay: "0.1s" }}>
+            Build<br />
+            Teach<br />
+            <span style={styles.gold}>Scale</span>
+          </h1>
+
+          <p className="animate-fade-in-up" style={{ ...styles.subtitle, animationDelay: "0.2s" }}>
+            Ce qui fonctionne pour moi,<br />fonctionne pour toi.
+          </p>
+
+          <div className="animate-fade-in-up" style={{ ...styles.ctaGroup, animationDelay: "0.3s" }}>
+            <a href="#formations" style={styles.btnPrimary}>
+              Formations Premium →
+            </a>
+            <a href="https://youtu.be/KoKkuErzN9c" style={styles.btnSecondary}>
+              Podcast: Conversations Sans Filtre
+            </a>
+          </div>
+
+          <div className="animate-fade-in-up" style={{ ...styles.stats, animationDelay: "0.4s" }}>
+            <div style={styles.stat}>
+              <div style={styles.statNum}>43</div>
+              <div style={styles.statLabel}>Employes</div>
             </div>
-
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.95] tracking-tight mb-8 animate-fade-in-up" style={{animationDelay: "0.1s"}}>
-              Build<br />
-              Teach<br />
-              <span className="text-gradient">Scale</span>
-            </h1>
-
-            <p className="text-xl md:text-2xl text-white/60 max-w-2xl mx-auto mb-12 animate-fade-in-up leading-relaxed" style={{animationDelay: "0.2s"}}>
-              Ce qui fonctionne pour moi,<br/>fonctionne pour toi.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in-up" style={{animationDelay: "0.3s"}}>
-              <a href="#formations" className="group bg-[#F5F3EE] text-black font-bold px-8 py-4 rounded-full flex items-center justify-center gap-2 hover-lift">
-                Formations Premium
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </a>
-              <a href="https://youtu.be/KoKkuErzN9c" className="border border-white/20 font-bold px-8 py-4 rounded-full flex items-center justify-center hover:border-[#D4A853] transition-colors hover-lift">
-                Podcast: Conversations Sans Filtre
-              </a>
+            <div style={styles.stat}>
+              <div style={styles.statNum}>480K+</div>
+              <div style={styles.statLabel}>Communaute</div>
             </div>
-
-            {/* STATS */}
-            <div className="grid grid-cols-3 gap-6 max-w-xl mx-auto border-t border-white/10 pt-12 animate-fade-in-up" style={{animationDelay: "0.4s"}}>
-              <div className="group hover-lift">
-                <p className="text-3xl md:text-4xl font-black text-gradient">43</p>
-                <p className="text-white/50 text-sm mt-2">Employes</p>
-              </div>
-              <div className="group hover-lift">
-                <p className="text-3xl md:text-4xl font-black text-gradient">480K+</p>
-                <p className="text-white/50 text-sm mt-2">Communaute</p>
-              </div>
-              <div className="group hover-lift">
-                <p className="text-3xl md:text-4xl font-black text-gradient">2x</p>
-                <p className="text-white/50 text-sm mt-2">Entreprises</p>
-              </div>
+            <div style={styles.stat}>
+              <div style={styles.statNum}>2x</div>
+              <div style={styles.statLabel}>Entreprises</div>
             </div>
           </div>
 
-          {/* SCROLL INDICATOR */}
-          <div className="flex justify-center mt-20 animate-float">
-            <div className="border border-white/20 rounded-full p-3 hover:border-[#D4A853] transition-colors cursor-pointer">
-              <ChevronDown size={24} className="text-white/50" />
-            </div>
+          <div className="animate-float" style={styles.scrollIndicator}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </div>
         </div>
       </section>
 
       {/* FORMATIONS */}
-      <section id="formations" className="px-5 py-24 border-t border-white/10">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl md:text-7xl font-black mb-4 animate-fade-in-up">Formations</h2>
-          <p className="text-white/60 mb-16 max-w-2xl animate-fade-in-up" style={{animationDelay: "0.1s"}}>
+      <section id="formations" style={styles.formations}>
+        <div style={styles.container}>
+          <h2 className="animate-fade-in-up" style={styles.h2}>Formations</h2>
+          <p className="animate-fade-in-up" style={{ ...styles.sectionDesc, animationDelay: "0.1s" }}>
             Lance ta marque. Builds ta SaaS. Domine ton industrie.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div style={styles.grid3}>
             {[
               {
                 title: "Marque de Vetements",
                 desc: "Lance ta marque sans machines, sans stock. Profit des le premier jour.",
-                icon: GraduationCap,
                 url: "/formations/marque-vetements",
-                delay: "0s"
+                delay: "0s",
               },
               {
                 title: "Tshirt Printing",
                 desc: "Du DTF a la broderie. Clients illimites. Profits garantis.",
-                icon: GraduationCap,
                 url: "/formations/tshirt-printing",
-                delay: "0.1s"
+                delay: "0.1s",
               },
               {
                 title: "App/SaaS avec IA",
                 desc: "De l'idee au lancement. Pas besoin de savoir coder.",
-                icon: GraduationCap,
                 url: "/formations/app-saas",
-                delay: "0.2s"
-              }
-            ].map((formation, i) => (
-              <a key={i} href={formation.url} className="group hover-lift border-gradient rounded-3xl p-8 hover:border-[#D4A853]/60 transition-all duration-300 flex flex-col animate-fade-in-up" style={{animationDelay: formation.delay}}>
-                <formation.icon className="text-[#D4A853] mb-6 group-hover:scale-110 transition-transform" size={32} />
-                <h3 className="text-2xl font-black mb-3">{formation.title}</h3>
-                <p className="text-white/55 leading-relaxed mb-8 flex-1">{formation.desc}</p>
-                <span className="flex items-center gap-2 font-bold text-[#D4A853]">
-                  S'inscrire <ArrowUpRight size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </span>
+                delay: "0.2s",
+              },
+            ].map((f, i) => (
+              <a
+                key={i}
+                href={f.url}
+                className="animate-fade-in-up"
+                style={{
+                  ...styles.card,
+                  animationDelay: f.delay,
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.transform = "translateY(-8px)"
+                  el.style.boxShadow = "0 20px 40px rgba(212, 168, 83, 0.1)"
+                  el.style.borderColor = "rgba(212, 168, 83, 0.6)"
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.transform = "translateY(0)"
+                  el.style.boxShadow = "none"
+                  el.style.borderColor = "rgba(255, 255, 255, 0.1)"
+                }}
+              >
+                <svg style={styles.cardIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M22 10v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path>
+                  <path d="M23 4v6h-6"></path>
+                </svg>
+                <h3 style={styles.cardTitle}>{f.title}</h3>
+                <p style={styles.cardDesc}>{f.desc}</p>
+                <div style={styles.cardCta}>S'inscrire →</div>
               </a>
             ))}
           </div>
@@ -318,17 +252,22 @@ export default function Home() {
       </section>
 
       {/* PODCAST */}
-      <section id="podcast" className="px-5 py-24 border-t border-white/10">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-[#141416] border border-white/10 rounded-3xl p-8 md:p-16 md:flex gap-12 items-center hover-lift animate-fade-in-up">
-            <Mic className="text-[#D4A853] shrink-0 mb-8 md:mb-0 animate-float" size={48} />
-            <div className="flex-1">
-              <h2 className="text-5xl md:text-6xl font-black mb-6">Podcast</h2>
-              <p className="text-lg md:text-xl text-white/60 leading-relaxed mb-8">
+      <section id="podcast" style={styles.podcast}>
+        <div style={styles.container}>
+          <div className="animate-fade-in-up" style={styles.podcastBox}>
+            <svg style={styles.podcastIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+            <div>
+              <h2 style={styles.podcastTitle}>Podcast</h2>
+              <p style={styles.podcastDesc}>
                 On parle argent, mindset, business. Les vraies conversations que les entrepreneurs n'ont pas en public.
               </p>
-              <a href="https://youtu.be/KoKkuErzN9c" className="inline-flex items-center gap-2 font-bold text-[#D4A853] hover:text-[#E0B96A] transition-colors">
-                Ecouter les episodes <ArrowUpRight size={18} />
+              <a href="https://youtu.be/KoKkuErzN9c" style={styles.podcastLink}>
+                Ecouter les episodes →
               </a>
             </div>
           </div>
@@ -336,92 +275,575 @@ export default function Home() {
       </section>
 
       {/* STORY */}
-      <section id="story" className="px-5 py-24 border-t border-white/10">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-5 gap-12 items-center">
-            <div className="md:col-span-2 animate-fade-in-up">
-              <div className="w-full aspect-square rounded-3xl bg-gradient-to-br from-[#D4A853] to-[#8a6a2f] flex items-center justify-center text-black text-6xl font-black animate-pulse-glow">
-                MY
-              </div>
-            </div>
-
-            <div className="md:col-span-3 animate-fade-in-up" style={{animationDelay: "0.2s"}}>
-              <h2 className="text-5xl md:text-6xl font-black mb-8">De 2 tshirts a 43 employes.</h2>
-              <div className="space-y-6 text-white/60 leading-relaxed text-lg">
-                <p>
-                  J'ai commence avec 2 tshirts. Aujourd'hui, Caractere Store: 43 employes, centaines de marques lancees, 480K entrepreneurs qui me suivent.
-                </p>
-                <p>
-                  Chaque semaine je documente ce qui marche. Pas de BS. Juste du terrain.
-                </p>
-                <ul className="space-y-3 ml-4 pt-4">
-                  <li className="flex gap-3">
-                    <span className="text-[#D4A853] shrink-0">→</span>
-                    <span>Comment scaler sans lever de fonds</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-[#D4A853] shrink-0">→</span>
-                    <span>Outils IA qui changent le game</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-[#D4A853] shrink-0">→</span>
-                    <span>Erreurs que tu dois eviter</span>
-                  </li>
-                </ul>
-              </div>
+      <section id="story" style={styles.story}>
+        <div style={styles.container}>
+          <div style={styles.storyGrid}>
+            <div className="animate-fade-in-up" style={styles.storyImage}>MY</div>
+            <div className="animate-fade-in-up" style={{ ...styles.storyContent, animationDelay: "0.2s" }}>
+              <h2 style={styles.storyTitle}>De 2 tshirts a 43 employes.</h2>
+              <p style={styles.storyText}>
+                J'ai commence avec 2 tshirts. Aujourd'hui, Caractere Store: 43 employes, centaines de marques lancees,
+                480K entrepreneurs qui me suivent.
+              </p>
+              <p style={styles.storyText}>Chaque semaine je documente ce qui marche. Pas de BS. Juste du terrain.</p>
+              <ul style={styles.storyList}>
+                <li style={styles.storyItem}>Comment scaler sans lever de fonds</li>
+                <li style={styles.storyItem}>Outils IA qui changent le game</li>
+                <li style={styles.storyItem}>Erreurs que tu dois eviter</li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
       {/* NEWSLETTER */}
-      <section id="newsletter" className="px-5 py-32 border-t border-white/10">
-        <div className="max-w-3xl mx-auto text-center animate-fade-in-up">
-          <h2 className="text-5xl md:text-7xl font-black mb-6">Chaque semaine.<br/>Dans ta boite mail.</h2>
-          <p className="text-white/55 text-lg mb-12">
+      <section id="newsletter" style={styles.newsletter}>
+        <div style={styles.container}>
+          <h2 className="animate-fade-in-up" style={styles.newsTitle}>
+            Chaque semaine.<br />Dans ta boite mail.
+          </h2>
+          <p className="animate-fade-in-up" style={{ ...styles.newsDesc, animationDelay: "0.1s" }}>
             1 strategie business, 1 outil IA, 1 lecon terrain. Gratuit, direct, sans spam.
           </p>
 
           {!success ? (
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
-              <div className="flex-1 relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-black/40" size={18} />
+            <form
+              onSubmit={handleSubscribe}
+              className="animate-fade-in-up"
+              style={{ ...styles.form, animationDelay: "0.2s" }}
+            >
+              <div style={styles.inputWrapper}>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ton@email.com"
-                  className="w-full bg-[#F5F3EE] text-black rounded-full pl-12 pr-4 py-4 outline-none focus:ring-2 focus:ring-[#D4A853] transition-all"
+                  style={styles.input}
                 />
               </div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-[#D4A853] text-black font-bold px-8 py-4 rounded-full hover:bg-[#E0B96A] transition-all disabled:opacity-50 hover-lift"
-              >
+              <button type="submit" disabled={loading} style={styles.submitBtn}>
                 {loading ? "..." : "Je m'inscris"}
               </button>
             </form>
           ) : (
-            <div className="bg-[#141416] border border-[#D4A853]/30 rounded-3xl p-12 text-center animate-fade-in-up">
-              <p className="text-2xl font-black text-[#D4A853]">✓ Bienvenue!</p>
-              <p className="text-white/60 mt-4">Verifie ton email pour acceder au contenu exclusif.</p>
+            <div className="animate-fade-in-up" style={styles.successBox}>
+              <h3 style={styles.successTitle}>✓ Bienvenue!</h3>
+              <p style={styles.successText}>Verifie ton email pour acceder au contenu exclusif.</p>
             </div>
           )}
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/10 px-5 py-12">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-white/40 text-sm">
+      <footer style={styles.footer}>
+        <div style={styles.footerContainer}>
           <p>© 2026 Moka Yakoubi — Build. Teach. Scale.</p>
-          <div className="flex gap-5 text-white/50">
-            <a href="https://instagram.com/mokayakoubi" className="hover:text-[#D4A853] transition-colors"><Instagram size={20} /></a>
-            <a href="https://www.youtube.com/@mokayakoubi" className="hover:text-[#D4A853] transition-colors"><Youtube size={20} /></a>
+          <div style={styles.socials}>
+            <a href="https://instagram.com/mokayakoubi" style={styles.socialLink}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <circle cx="17.5" cy="6.5" r="1.5"></circle>
+              </svg>
+            </a>
+            <a href="https://youtube.com/@mokayakoubi" style={styles.socialLink}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+              </svg>
+            </a>
           </div>
         </div>
       </footer>
-    </main>
+    </div>
   )
+}
+
+const styles = {
+  root: {
+    width: "100%",
+    background: "#0A0A0B",
+    color: "#F5F3EE",
+    fontFamily: "'Archivo', system-ui, sans-serif",
+    lineHeight: "1.6",
+    overflow: "hidden",
+  } as React.CSSProperties,
+
+  nav: {
+    position: "fixed" as const,
+    top: 0,
+    width: "100%",
+    zIndex: 50,
+    background: "rgba(10, 10, 11, 0.85)",
+    backdropFilter: "blur(10px)",
+    borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+    padding: "1rem 1.25rem",
+  } as React.CSSProperties,
+
+  navContainer: {
+    maxWidth: "1400px",
+    margin: "0 auto",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  } as React.CSSProperties,
+
+  logo: {
+    fontWeight: 900,
+    fontSize: "1.125rem",
+    letterSpacing: "-0.02em",
+  } as React.CSSProperties,
+
+  links: {
+    display: "flex",
+    gap: "2rem",
+    fontSize: "0.875rem",
+    color: "rgba(255, 255, 255, 0.7)",
+  } as React.CSSProperties,
+
+  navLink: {
+    color: "inherit",
+    textDecoration: "none",
+    transition: "color 0.3s",
+    cursor: "pointer",
+  } as React.CSSProperties,
+
+  navBtn: {
+    background: "#D4A853",
+    color: "#0A0A0B",
+    fontSize: "0.875rem",
+    fontWeight: 700,
+    padding: "0.625rem 1.25rem",
+    borderRadius: "9999px",
+    border: "none",
+    cursor: "pointer",
+    transition: "all 0.3s",
+  } as React.CSSProperties,
+
+  hero: {
+    position: "relative" as const,
+    minHeight: "100vh",
+    padding: "6rem 1.25rem 5rem",
+    overflow: "hidden",
+  } as React.CSSProperties,
+
+  heroBg1: {
+    position: "absolute" as const,
+    top: 80,
+    left: 40,
+    width: 288,
+    height: 288,
+    background: "#D4A853",
+    borderRadius: "50%",
+    filter: "blur(96px)",
+    opacity: 0.1,
+    zIndex: 1,
+  } as React.CSSProperties,
+
+  heroBg2: {
+    position: "absolute" as const,
+    bottom: 128,
+    right: 40,
+    width: 384,
+    height: 384,
+    background: "#D4A853",
+    borderRadius: "50%",
+    filter: "blur(96px)",
+    opacity: 0.1,
+    zIndex: 1,
+  } as React.CSSProperties,
+
+  heroContainer: {
+    maxWidth: "1400px",
+    margin: "0 auto",
+    position: "relative" as const,
+    zIndex: 10,
+    textAlign: "center" as const,
+  } as React.CSSProperties,
+
+  tag: {
+    color: "#D4A853",
+    fontWeight: 600,
+    letterSpacing: "0.15em",
+    fontSize: "0.75rem",
+    textTransform: "uppercase" as const,
+    marginBottom: "2rem",
+    display: "block",
+  } as React.CSSProperties,
+
+  h1: {
+    fontSize: "3.5rem",
+    lineHeight: 0.95,
+    fontWeight: 900,
+    letterSpacing: "-0.02em",
+    marginBottom: "2rem",
+  } as React.CSSProperties,
+
+  gold: {
+    background: "linear-gradient(135deg, #D4A853 0%, #E0B96A 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+  } as React.CSSProperties,
+
+  subtitle: {
+    fontSize: "1.125rem",
+    color: "rgba(255, 255, 255, 0.6)",
+    maxWidth: "42rem",
+    margin: "0 auto 3rem",
+    lineHeight: 1.6,
+  } as React.CSSProperties,
+
+  ctaGroup: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "1rem",
+    marginBottom: "4rem",
+    maxWidth: "28rem",
+    marginLeft: "auto",
+    marginRight: "auto",
+  } as React.CSSProperties,
+
+  btnPrimary: {
+    background: "#F5F3EE",
+    color: "#0A0A0B",
+    fontWeight: 700,
+    padding: "1rem 2rem",
+    borderRadius: "9999px",
+    textDecoration: "none",
+    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "0.5rem",
+    cursor: "pointer",
+  } as React.CSSProperties,
+
+  btnSecondary: {
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    color: "#F5F3EE",
+    fontWeight: 700,
+    padding: "1rem 2rem",
+    borderRadius: "9999px",
+    textDecoration: "none",
+    transition: "all 0.3s",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "0.5rem",
+    cursor: "pointer",
+  } as React.CSSProperties,
+
+  stats: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: "1.5rem",
+    maxWidth: "28rem",
+    margin: "3rem auto 0",
+    paddingTop: "3rem",
+    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+  } as React.CSSProperties,
+
+  stat: {
+    transition: "all 0.3s",
+  } as React.CSSProperties,
+
+  statNum: {
+    fontSize: "1.875rem",
+    fontWeight: 900,
+    background: "linear-gradient(135deg, #D4A853 0%, #E0B96A 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+  } as React.CSSProperties,
+
+  statLabel: {
+    color: "rgba(255, 255, 255, 0.5)",
+    fontSize: "0.875rem",
+    marginTop: "0.5rem",
+  } as React.CSSProperties,
+
+  scrollIndicator: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "5rem",
+  } as React.CSSProperties,
+
+  formations: {
+    padding: "6rem 1.25rem",
+    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+  } as React.CSSProperties,
+
+  container: {
+    maxWidth: "1400px",
+    margin: "0 auto",
+  } as React.CSSProperties,
+
+  h2: {
+    fontSize: "3rem",
+    fontWeight: 900,
+    marginBottom: "1rem",
+  } as React.CSSProperties,
+
+  sectionDesc: {
+    color: "rgba(255, 255, 255, 0.6)",
+    marginBottom: "4rem",
+    maxWidth: "32rem",
+  } as React.CSSProperties,
+
+  grid3: {
+    display: "grid",
+    gap: "1.5rem",
+  } as React.CSSProperties,
+
+  card: {
+    background: "#141416",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    borderRadius: "1.5rem",
+    padding: "2rem",
+    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+    textDecoration: "none",
+    color: "inherit",
+    display: "flex",
+    flexDirection: "column" as const,
+    cursor: "pointer",
+  } as React.CSSProperties,
+
+  cardIcon: {
+    color: "#D4A853",
+    marginBottom: "1.5rem",
+    width: 32,
+    height: 32,
+  } as React.CSSProperties,
+
+  cardTitle: {
+    fontSize: "1.5rem",
+    fontWeight: 900,
+    marginBottom: "0.75rem",
+  } as React.CSSProperties,
+
+  cardDesc: {
+    color: "rgba(255, 255, 255, 0.55)",
+    marginBottom: "2rem",
+    flex: 1,
+    lineHeight: 1.6,
+  } as React.CSSProperties,
+
+  cardCta: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    fontWeight: 700,
+    color: "#D4A853",
+  } as React.CSSProperties,
+
+  podcast: {
+    padding: "6rem 1.25rem",
+    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+  } as React.CSSProperties,
+
+  podcastBox: {
+    background: "#141416",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    borderRadius: "1.5rem",
+    padding: "2rem",
+    display: "grid",
+    gap: "3rem",
+    alignItems: "center",
+    transition: "all 0.3s",
+    cursor: "pointer",
+  } as React.CSSProperties,
+
+  podcastIcon: {
+    color: "#D4A853",
+    width: 48,
+    height: 48,
+  } as React.CSSProperties,
+
+  podcastTitle: {
+    fontSize: "2.25rem",
+    fontWeight: 900,
+    marginBottom: "1.5rem",
+  } as React.CSSProperties,
+
+  podcastDesc: {
+    color: "rgba(255, 255, 255, 0.6)",
+    lineHeight: 1.8,
+    marginBottom: "2rem",
+    fontSize: "1.125rem",
+  } as React.CSSProperties,
+
+  podcastLink: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    fontWeight: 700,
+    color: "#D4A853",
+    textDecoration: "none",
+  } as React.CSSProperties,
+
+  story: {
+    padding: "6rem 1.25rem",
+    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+  } as React.CSSProperties,
+
+  storyGrid: {
+    display: "grid",
+    gap: "3rem",
+    alignItems: "center",
+  } as React.CSSProperties,
+
+  storyImage: {
+    width: "100%",
+    aspectRatio: "1",
+    borderRadius: "1.5rem",
+    background: "linear-gradient(135deg, #D4A853, #8a6a2f)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#0A0A0B",
+    fontSize: "3.5rem",
+    fontWeight: 900,
+    boxShadow: "0 0 30px rgba(212, 168, 83, 0.3)",
+  } as React.CSSProperties,
+
+  storyContent: {} as React.CSSProperties,
+
+  storyTitle: {
+    fontSize: "2.25rem",
+    fontWeight: 900,
+    marginBottom: "2rem",
+    lineHeight: 1.2,
+  } as React.CSSProperties,
+
+  storyText: {
+    color: "rgba(255, 255, 255, 0.6)",
+    lineHeight: 1.8,
+    marginBottom: "1.5rem",
+    fontSize: "1.125rem",
+  } as React.CSSProperties,
+
+  storyList: {
+    listStyle: "none",
+    marginTop: "2rem",
+    paddingTop: "1rem",
+  } as React.CSSProperties,
+
+  storyItem: {
+    display: "flex",
+    gap: "0.75rem",
+    color: "rgba(255, 255, 255, 0.6)",
+    marginBottom: "0.75rem",
+    fontSize: "1rem",
+    lineHeight: 1.6,
+  } as React.CSSProperties,
+
+  newsletter: {
+    padding: "8rem 1.25rem",
+    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+    textAlign: "center" as const,
+  } as React.CSSProperties,
+
+  newsTitle: {
+    fontSize: "2.25rem",
+    fontWeight: 900,
+    lineHeight: 1.2,
+    marginBottom: "1.5rem",
+  } as React.CSSProperties,
+
+  newsDesc: {
+    color: "rgba(255, 255, 255, 0.55)",
+    fontSize: "1.125rem",
+    marginBottom: "3rem",
+  } as React.CSSProperties,
+
+  form: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "0.75rem",
+    maxWidth: "32rem",
+    margin: "0 auto",
+  } as React.CSSProperties,
+
+  inputWrapper: {
+    flex: 1,
+    position: "relative" as const,
+  } as React.CSSProperties,
+
+  input: {
+    width: "100%",
+    background: "#F5F3EE",
+    color: "#0A0A0B",
+    border: "none",
+    borderRadius: "9999px",
+    padding: "1rem",
+    paddingLeft: "2.5rem",
+    fontFamily: "inherit",
+    fontSize: "0.95rem",
+    outline: "none",
+  } as React.CSSProperties,
+
+  submitBtn: {
+    background: "#D4A853",
+    color: "#0A0A0B",
+    fontWeight: 700,
+    padding: "1rem 2rem",
+    borderRadius: "9999px",
+    border: "none",
+    cursor: "pointer",
+    fontSize: "0.95rem",
+    transition: "all 0.3s",
+  } as React.CSSProperties,
+
+  successBox: {
+    background: "#141416",
+    border: "1px solid rgba(212, 168, 83, 0.3)",
+    borderRadius: "1.5rem",
+    padding: "3rem",
+    textAlign: "center" as const,
+  } as React.CSSProperties,
+
+  successTitle: {
+    fontSize: "1.5rem",
+    fontWeight: 900,
+    color: "#D4A853",
+    marginBottom: "1rem",
+  } as React.CSSProperties,
+
+  successText: {
+    color: "rgba(255, 255, 255, 0.6)",
+    marginBottom: 0,
+  } as React.CSSProperties,
+
+  footer: {
+    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+    padding: "3rem 1.25rem",
+  } as React.CSSProperties,
+
+  footerContainer: {
+    maxWidth: "1400px",
+    margin: "0 auto",
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "1.5rem",
+    textAlign: "center" as const,
+    color: "rgba(255, 255, 255, 0.4)",
+    fontSize: "0.875rem",
+  } as React.CSSProperties,
+
+  socials: {
+    display: "flex",
+    gap: "1.25rem",
+    justifyContent: "center",
+    color: "rgba(255, 255, 255, 0.5)",
+  } as React.CSSProperties,
+
+  socialLink: {
+    color: "inherit",
+    textDecoration: "none",
+    transition: "color 0.3s",
+    display: "flex",
+    cursor: "pointer",
+  } as React.CSSProperties,
 }
