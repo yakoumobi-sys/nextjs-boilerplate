@@ -37,14 +37,18 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-5 py-4 flex justify-between items-center">
           <a href="#" className="font-black tracking-tight text-lg">MOKA YAKOUBI</a>
           <div className="hidden md:flex items-center gap-8 text-sm text-white/70">
-            <a href="#formations" className="hover:text-white transition">Formations</a>
-            <a href="#podcast" className="hover:text-white transition">Podcast</a>
-            <a href="#gratuit" className="hover:text-white transition">Contenu gratuit</a>
-          </div>
-          <a href="#newsletter" className="bg-[#D4A853] text-black text-sm font-bold px-5 py-2.5 rounded-full hover:bg-[#e0b96a] transition">
-            Rejoindre
-          </a>
-        </div>
+            <div className="flex flex-col sm:flex-row gap-4 mb-16">
+  <a href="#formations" className="group bg-[#F5F3EE] text-black font-bold px-8 py-4 rounded-full flex items-center justify-center gap-2 hover:bg-white transition">
+    Découvrir les formations
+    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+  </a>
+  <a href="https://youtu.be/KoKkuErzN9c" className="border border-white/20 font-bold px-8 py-4 rounded-full flex items-center justify-center hover:border-white/60 transition">
+    Écouter le podcast
+  </a>
+  <a href="#gratuit" className="border border-white/20 font-bold px-8 py-4 rounded-full flex items-center justify-center hover:border-white/60 transition">
+    Contenu gratuit
+  </a>
+</div>
       </nav>
 
       {/* HERO */}
