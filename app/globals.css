@@ -1,21 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;900&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Archivo', -apple-system, sans-serif;
-  background: #0A0A0B;
-}
-
-::selection {
-  background: #D4A853;
-  color: #000;
+  font-family: 'Archivo', system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
 }
