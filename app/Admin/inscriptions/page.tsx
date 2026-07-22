@@ -1,9 +1,6 @@
 "use client"
 
-export const dynamic = "force-dynamic"
-
 import { useEffect, useState } from "react"
-import { createClient } from "@supabase/supabase-js"
 import { Download, LogOut } from "lucide-react"
 
 type Inscription = {
@@ -20,14 +17,8 @@ export default function AdminInscriptions() {
   const [password, setPassword] = useState("")
   const [authenticated, setAuthenticated] = useState(false)
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
-  )
-
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    // Simple password check - change this to your password
     if (password === "Moka2024") {
       setAuthenticated(true)
       fetchInscriptions()
@@ -38,17 +29,36 @@ export default function AdminInscriptions() {
 
   const fetchInscriptions = async () => {
     setLoading(true)
-    const { data, error } = await supabase
-      .from("formation_inscriptions")
-      .select("*")
-      .order("created_at", { ascending: false })
+    try {
+      const { createClient } = await import("@supabase/supabase-js")
+      
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    if (error) {
-      console.error("Error fetching inscriptions:", error)
-    } else {
-      setInscriptions(data || [])
+      if (!supabaseUrl || !supabaseKey) {
+        alert("Erreur: Variables Supabase manquantes")
+        return
+      }
+
+      const supabase = createClient(supabaseUrl, supabaseKey)
+
+      const { data, error } = await supabase
+        .from("formation_inscriptions")
+        .select("*")
+        .order("created_at", { ascending: false })
+
+      if (error) {
+        console.error("Error fetching inscriptions:", error)
+        alert("Erreur lors du chargement des inscriptions")
+      } else {
+        setInscriptions(data || [])
+      }
+    } catch (err) {
+      console.error("Error:", err)
+      alert("Erreur lors du chargement")
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const downloadCSV = () => {
