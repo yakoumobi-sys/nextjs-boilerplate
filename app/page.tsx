@@ -109,7 +109,7 @@ export default function Home() {
           </a>
 
           {/* PODCAST */}
-          <a id="podcast" href="https://www.youtube.com/@mokayakoubi" className="group bg-[#141416] border border-white/10 rounded-3xl p-8 hover:border-[#D4A853]/60 transition flex flex-col">
+<a id="podcast" href="https://youtu.be/KoKkuErzN9c"
             <Mic className="text-[#D4A853] mb-6" size={32} />
             <h3 className="text-2xl font-black mb-3">Podcast</h3>
             <p className="text-white/55 leading-relaxed mb-8 flex-1">
