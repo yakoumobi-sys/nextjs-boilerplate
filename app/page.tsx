@@ -158,7 +158,7 @@ export default function Home() {
 
           <div className="animate-fade-in-up" style={{ ...styles.ctaGroup, animationDelay: "0.3s" }}>
             <a href="#formations" style={styles.btnPrimary}>
-              Formations Premium →
+              Formations gratuites →
             </a>
             <a href="https://youtu.be/KoKkuErzN9c" style={styles.btnSecondary}>
               Podcast: Conversations Sans Filtre
